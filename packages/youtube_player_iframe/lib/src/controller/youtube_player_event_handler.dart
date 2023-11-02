@@ -125,7 +125,10 @@ class YoutubePlayerEventHandler {
 
   /// This event fires when the player receives information about video states.
   void onVideoState(Object data) {
-    videoStateController.add(YoutubeVideoState.fromJson(data.toString()));
+    if (!videoStateController.isClosed) {
+      // safe to add new data as the controller is not closed yet
+      videoStateController.add(YoutubeVideoState.fromJson(data.toString()));
+    }
   }
 
   /// Returns a [Future] that completes when the player is ready.
