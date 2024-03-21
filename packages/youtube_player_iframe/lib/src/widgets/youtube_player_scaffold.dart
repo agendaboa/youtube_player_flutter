@@ -201,7 +201,8 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: _handleFullScreenBackAction(),
+      canPop: false,
+      onPopInvoked: _handleFullScreenBackAction,
       child: widget.child,
     );
   }
@@ -230,12 +231,11 @@ class _FullScreenState extends State<_FullScreen> with WidgetsBindingObserver {
         : SystemUiMode.edgeToEdge;
   }
 
-  bool _handleFullScreenBackAction() {
+  void _handleFullScreenBackAction(bool didPop) {
+    if (didPop) return;
+
     if (mounted && widget.fullScreenOption.enabled) {
       YoutubePlayerControllerProvider.of(context).exitFullScreen();
-      return false;
     }
-
-    return true;
   }
 }
